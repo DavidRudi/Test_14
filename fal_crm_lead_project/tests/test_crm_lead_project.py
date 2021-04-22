@@ -50,7 +50,8 @@ class TestCRMLeadProject(TestCrmCommon):
         wizard_vals = {
             'name': "Project Crm",
             'project_template_id': self.project_template_1.id,
-            'crm_id': self.lead.id,
         }
         wizard_project = self.env['crm.lead.project'].create(wizard_vals)
-        self.assertEqual(wizard_project.crm_lead_id, self.lead)
+        wizard_project.with_context({
+            'active_id': self.lead.id}).action_create()
+        self.assertEqual(self.lead.fal_number_project, 1)
