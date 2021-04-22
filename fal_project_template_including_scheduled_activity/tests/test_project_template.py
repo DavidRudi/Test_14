@@ -1,5 +1,5 @@
 from odoo.tests.common import TransactionCase
-from .test_project_base import TestProjectCommon
+from odoo.addons.project.tests.test_project_base import TestProjectCommon
 from odoo.tests import Form, tagged
 from odoo.exceptions import UserError
 
