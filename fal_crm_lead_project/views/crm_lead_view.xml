@@ -1,0 +1,49 @@
+<odoo>
+    <record id="fal_crm_project_button_view" model="ir.ui.view">
+        <field name="name">fal_crm_project_button_view</field>
+        <field name="model">crm.lead</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_set_won_rainbowman']" position="before">
+                <button string="Create Project" name="timesheet_create_project" type="object" class="oe_highlight" groups="project.group_project_manager"/>
+            </xpath>
+            <button name="action_schedule_meeting" position="before">
+                <button class="oe_stat_button" type="object" name="fal_count_project" icon="fa-puzzle-piece" groups="project.group_project_user">
+                    <field string="Project" name="fal_number_project" widget="statinfo"/>
+                </button>
+            </button>
+        </field>
+    </record>
+
+    <record id="view_project_fal_crm_lead_project" model="ir.ui.view">
+        <field name="name">project.project.fal.crm.lead.project.tree</field>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <tree decoration-bf="message_needaction==True" decoration-muted="active == False" string="Projects" create="0">
+                <field name="sequence" widget="handle"/>
+                <field name="message_needaction" invisible="1"/>
+                <field name="active" invisible="1"/>
+                <field name="name" string="Project Name"/>
+                <field name="user_id" string="Project Manager"/>
+                <field name="partner_id" string="Contact"/>
+            </tree>
+        </field>
+    </record>
+
+     <record id="edit_project_inherit" model="ir.ui.view">
+        <field name="name">project.project.form</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='analytic_account_id']" position="after">
+                <field string="CRM" name="crm_lead_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//form/sheet/div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" type="object" name="compute_crm_count" icon="fa-bars" attrs="{'invisible': [('crm_lead_id','=', False)]}">
+                    <field string="CRM" name="crm_count" widget="statinfo" attrs="{'invisible': [('crm_lead_id','=', False)]}"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

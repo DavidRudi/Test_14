@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="crm_lead_project_view_form" model="ir.ui.view">
+            <field name="name">crm.lead.project.view.form</field>
+            <field name="model">crm.lead.project</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <h1>
+                            <field name="name" default_focus="1" placeholder="Name"/>
+                        </h1>
+                        <group>
+                            <field name="crm_id" invisible="1"/>
+                            <field name="project_template_id"/>
+                            <field name="fal_analytic_account_id"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string='Create Project' name="action_create" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+    </data>
+</odoo>
