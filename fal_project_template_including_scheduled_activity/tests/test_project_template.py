@@ -1,13 +1,14 @@
 from odoo.tests.common import TransactionCase
+from .test_project_base import TestProjectCommon
 from odoo.tests import Form, tagged
 from odoo.exceptions import UserError
 
 
 @tagged('cluedoo')
-class TestProjectCommon(TransactionCase):
+class TestProjectTemplate(TestProjectCommon):
     @classmethod
     def setUpClass(cls):
-        super(TestProjectCommon, cls).setUpClass()
+        super(TestProjectTemplate, cls).setUpClass()
 
         user_group_employee = cls.env.ref('base.group_user')
         user_group_project_user = cls.env.ref('project.group_project_user')
