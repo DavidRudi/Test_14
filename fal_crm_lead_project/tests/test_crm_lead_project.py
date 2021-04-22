@@ -23,7 +23,7 @@ class TestCRMLeadProject(TestCrmCommon):
         cls.task_1 = cls.env['project.task'].with_context({'mail_create_nolog': True}).create({
             'name': 'Template UserTask',
             'delay_count': 4,
-            'project_id': cls.project_template.id})
+            'project_id': cls.project_template_1.id})
         # })
 
     def test_crm_lead_creation_with_project(self):
