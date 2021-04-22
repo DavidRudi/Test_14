@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- override -->
+        <record id="open_view_project_all_config" model="ir.actions.act_window">
+            <field name="name">Projects</field>
+            <field name="res_model">project.project</field>
+            <field name="domain">[('fal_is_template', '=', False)]</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('project.view_project')}),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('project.view_project_kanban')})]"/>
+            <field name="search_view_id" ref="project.view_project_project_filter"/>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                   No projects found. Let's create one!
+                </p><p>
+                    Projects regroup tasks on the same topic and each have their own dashboard.
+                </p>
+            </field>
+        </record>
+
+        <!-- override -->
+        <record id="open_view_project_all" model="ir.actions.act_window">
+            <field name="name">Projects</field>
+            <field name="res_model">project.project</field>
+            <field name="domain">[('fal_is_template', '=', False)]</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="view_id" ref="project.view_project_kanban"/>
+            <field name="search_view_id" ref="project.view_project_project_filter"/>
+            <field name="target">main</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No projects found. Let's create one!
+                </p><p>
+                    Projects regroup tasks on the same topic and each have their own dashboard.
+                </p>
+            </field>
+        </record>
+
+        <record id="project_project_view_form_simplified" model="ir.ui.view">
+            <field name="name">project.project.view.form.simplified</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.project_project_view_form_simplified"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/group[1]" position="inside">
+                    <field name="project_template" attrs="{'invisible': [('fal_is_template','=',True)]}"/>
+                    <field name="fal_is_template" attrs="{'invisible': [('project_template','!=',False)]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="edit_project_inherit_template" model="ir.ui.view">
+            <field name="name">project.project.form.template</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project" />
+            <field name="arch" type="xml">
+                <xpath expr="//form/header" position="inside">
+                    <button string="Create Project" class="btn-primary" name="take_template" type="object" attrs="{'invisible': [('fal_is_template', '=', False)]}"/>
+                </xpath>
+                <notebook>
+                    <page string="Other" name="other">
+                        <group>
+                            <group name="duration_group" string="Project Terms">
+                                <field name="start_date" attrs="{'invisible': [('fal_is_template','=',True)]}"/>
+                                <field name="delay_count" attrs="{'invisible': [('fal_is_template','!=',True)]}"/>
+                                <label for="date_end" attrs="{'invisible': [('fal_is_template','=',True)]}"/>
+                                <div class="o_row">
+                                    <field name="date_end" attrs="{'invisible': [('fal_is_template','=',True)]}" nolabel="1"/>
+                                </div>
+                            </group>
+                            <group name="fal_other_info" string="Project Template">
+                                <field name="project_template" attrs="{'invisible': [('fal_is_template','=',True)], 'readonly': [('task_count','>',0)]}" context="{'default_fal_is_template': True}"/>
+                                <field name="fal_is_template" attrs="{'invisible': [('project_template','!=',False)]}"/>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+        <record id="action_project_template_form" model="ir.actions.act_window">
+            <field name="name">Project Template</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.project</field>
+            <field name="domain">[('fal_is_template', '!=', False)]</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('project.view_project')})]"/>
+            <field name="context">{'default_fal_is_template': 1}</field>
+            <field name="filter" eval="True"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a project template.
+              </p><p>
+                Odoo helps you to create a project template
+              </p>
+            </field>
+        </record>
+
+        <menuitem id="fal_menu_project_template" name="Project Template" parent="project.menu_project_config" action="action_project_template_form"/>
+
+        <record id="view_task_form2_inherit" model="ir.ui.view">
+            <field name="name">project.task.form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2" />
+            <field name="arch" type="xml">
+                <xpath expr="//group/group[1]/field[@name='date_deadline']" position="after">
+                    <field name="is_template" invisible="1"/>
+                    <field name="assignment_logic" attrs="{'invisible': [('is_template','!=',True)]}"/>
+                    <field name="delay_count" attrs="{'invisible': [('is_template','!=',True)]}"/>
+                </xpath>
+                <xpath expr="//group/group[1]/field[@name='date_deadline']" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', ('is_closed', '=', True), ('is_template', '=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//group/group[1]/field[@name='user_id']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('is_template', '=', True)]}</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
