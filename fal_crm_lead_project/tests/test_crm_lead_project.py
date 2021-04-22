@@ -31,5 +31,6 @@ class TestCRMLeadProject(TestCrmCommon):
         }
         lead = self.env['crm.lead'].create(lead_data)
         lead.partner_id = parter_lead_p
-        lead.timesheet_create_project()
-        self.assertEqual(lead.fal_number_project, 1)
+        result = lead.timesheet_create_project()
+        project = self.env['project.project'].browse(result['res_id'])
+        self.assertEqual(project.crm_lead_id, lead)
