@@ -58,7 +58,7 @@ class TestProjectTemplate(TestProjectCommon):
             'privacy_visibility': 'portal',
             'fal_is_template': True,
             'delay_count': 3,
-            'partner_id': cls.partner_1.id})
+            'partner_id': cls.partner_1a.id})
         # Already-existing tasks in Pigs
         cls.task_1 = cls.env['project.task'].with_context({'mail_create_nolog': True}).create({
             'name': 'Template UserTask',
@@ -70,4 +70,4 @@ class TestProjectTemplate(TestProjectCommon):
         """Create project from project template"""
         project_new = self.project_template.take_template()
 
-        self.assertTrue(project_new.ref)
+        self.assertTrue(project_new.fal_is_template == False)
