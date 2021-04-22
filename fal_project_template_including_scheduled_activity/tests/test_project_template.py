@@ -70,4 +70,4 @@ class TestProjectTemplate(TestProjectCommon):
         """Create project from project template"""
         project_new = self.project_template.take_template()
 
-        self.assertTrue(project_new.fal_is_template == False)
+        self.assertTrue(project_new)
