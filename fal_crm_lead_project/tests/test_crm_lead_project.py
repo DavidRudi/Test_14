@@ -10,6 +10,21 @@ class TestCRMLeadProject(TestCrmCommon):
         cls.country_ref = cls.env.ref('base.be')
         cls.test_email = '"Test Email" <test.email@example.com>'
         cls.test_phone = '0485112233'
+        cls.partner_P = cls.env['res.partner'].create({
+            'name': 'Valid L',
+            'email': 'valid.l@agrolait.com'})
+        cls.project_template_1 = cls.env['project.project'].with_context({'mail_create_nolog': True}).create({
+            'name': 'Project Template New',
+            'privacy_visibility': 'portal',
+            'fal_is_template': True,
+            'delay_count': 3,
+            'partner_id': cls.partner_P.id})
+        # Already-existing tasks in Pigs
+        cls.task_1 = cls.env['project.task'].with_context({'mail_create_nolog': True}).create({
+            'name': 'Template UserTask',
+            'delay_count': 4,
+            'project_id': cls.project_template.id})
+        # })
 
     def test_crm_lead_creation_with_project(self):
         parter_lead_p = self.env['res.partner'].create({
@@ -29,8 +44,13 @@ class TestCRMLeadProject(TestCrmCommon):
             'mobile': '987654321',
             'website': 'http://mywebsite.test.org',
         }
-        lead = self.env['crm.lead'].create(lead_data)
-        lead.partner_id = parter_lead_p
-        result = lead.timesheet_create_project()
-        project = self.env['project.project'].browse(result['res_id'])
-        self.assertEqual(project.crm_lead_id, lead)
+        self.lead = self.env['crm.lead'].create(lead_data)
+        self.lead.partner_id = parter_lead_p
+
+        wizard_vals = {
+            'name': "Project Crm",
+            'project_template_id': self.project_template_1.id,
+            'crm_id': self.lead.id,
+        }
+        wizard_project = self.env['crm.lead.project'].create(wizard_vals)
+        self.assertEqual(wizard_project.crm_lead_id, self.lead)
