@@ -50,6 +50,7 @@ class TestCRMLeadProject(TestCrmCommon):
         wizard_vals = {
             'name': "Project Crm",
             'project_template_id': self.project_template_1.id,
+            'crm_id': self.lead.id,
         }
         wizard_project = self.env['crm.lead.project'].create(wizard_vals)
         wizard_project.with_context({
