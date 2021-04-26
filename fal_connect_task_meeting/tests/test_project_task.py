@@ -27,7 +27,7 @@ class TestProjectTask(TestProjectCommon):
         # Already-existing tasks in Pigs
         cls.task_1 = cls.env['project.task'].with_context({'mail_create_nolog': True}).create({
             'name': 'Template UserTask',
-            'user_id': cls.self.env.user,
+            'user_id': cls.user_projecttask.id,
             'planned_date_begin': "2021-04-07 11:00:00",
             'planned_date_end': "2021-04-07 15:00:00",
-            'project_id': cls.user_projecttask.id})
+            'project_id': cls.project_test.id})
