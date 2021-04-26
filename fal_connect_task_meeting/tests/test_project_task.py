@@ -10,6 +10,9 @@ class TestProjectTask(TestProjectCommon):
     def setUpClass(cls):
         super(TestProjectTask, cls).setUpClass()
 
+        user_group_employee = cls.env.ref('base.group_user')
+        user_group_project_manager = cls.env.ref('project.group_project_manager')
+
         Users = cls.env['res.users'].with_context({'no_reset_password': True})
         cls.user_projecttask = Users.create({
             'name': 'Didier Drogba',
