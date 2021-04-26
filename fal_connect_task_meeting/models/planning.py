@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
-import logging
-
-_logger = logging.getLogger(__name__)
 
 
 class Planning(models.Model):
@@ -25,7 +22,6 @@ class Planning(models.Model):
                 'event_tz': planning.user_id.tz,
                 'activity_ids': [(5, 0, 0)],
             }
-            _logger.info(self._context, "Create calendar")
         meetings = self.env['calendar.event'].with_context(
             no_mail_to_attendees=True, active_model=self._name).create(meeting_values)
         self.meeting_id = meetings.id
