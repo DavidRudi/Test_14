@@ -31,19 +31,26 @@ class TestCaseDocumentsBridgeSale(TransactionCase):
             'create_model': 'sale.order',
         })
 
-    def test_bridge_folder_workflow(self):
-        """
-        tests the create new business model (sale).
+    def test_create_product_from_workflow(self):
 
-        """
-        self.assertEqual(self.attachment_txt.res_model, 'documents.document', "failed at default res model")
-        self.workflow_rule_task.apply_actions([self.attachment_txt.id])
+        document_gif = self.env['documents.document'].create({
+            'datas': GIF,
+            'name': 'file.gif',
+            'mimetype': 'image/gif',
+            'folder_id': self.folder_so.id,
+        })
 
-        self.assertEqual(self.attachment_txt.res_model, 'sale.order', "failed at workflow_bridge_documents_sale_order"
-                                                                        " new res_model")
-        so = self.env['sale.order'].search([('id', '=', self.attachment_txt.res_id)])
-        self.assertTrue(so.exists(), 'failed at workflow_bridge_documents_sale_order so')
-        self.assertEqual(self.attachment_txt.res_id, so.id, "failed at workflow_bridge_documents_sale_order res_id")
+        workflow_rule = self.env['documents.workflow.rule'].create({
+            'domain_folder_id': self.folder_so.id,
+            'name': 'workflow sale',
+            'create_model': 'sale.order',
+        })
+
+        action = workflow_rule.apply_actions([document_gif.id])
+        new_sale_order = self.env['sale.order'].browse([action['res_id']])
+
+        self.assertEqual(document_gif.res_model, 'sale.order')
+        self.assertEqual(document_gif.res_id, new_sale_order.id)
 
     def test_bridge_sale_project_settings_on_write(self):
         """
@@ -74,5 +81,4 @@ class TestCaseDocumentsBridgeSale(TransactionCase):
         })
 
         txt_doc = self.env['documents.document'].search([('attachment_id', '=', attachment_txt_test.id)])
-
         self.assertEqual(txt_doc.folder_id, folder_test, 'the text test document have a folder')
