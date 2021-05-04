@@ -54,7 +54,7 @@ class TestCaseDocumentsBridgeSale(TransactionCase):
         company_test = self.env['res.company'].create({
             'name': 'test bridge sales',
             'sale_folder': folder_test.id,
-            'documents_project_settings': False
+            'documents_sale_settings': False
         })
         order_test = self.env['sale.order'].create({
             'name': 'sale_order_test',
@@ -66,7 +66,7 @@ class TestCaseDocumentsBridgeSale(TransactionCase):
             'mimetype': 'text/plain',
         })
 
-        company_test.write({'documents_project_settings': True})
+        company_test.write({'documents_sale_settings': True})
 
         attachment_txt_test.write({
             'res_model': 'sale.order',
