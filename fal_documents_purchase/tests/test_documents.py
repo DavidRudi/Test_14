@@ -31,7 +31,7 @@ class TestCaseDocumentsBridgePurchase(TransactionCase):
             'create_model': 'purchase.order',
         })
 
-    def test_create_sale_from_workflow(self):
+    def test_create_purchase_from_workflow(self):
 
         document_gif = self.env['documents.document'].create({
             'datas': GIF,
