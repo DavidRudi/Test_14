@@ -31,7 +31,7 @@ class TestCaseDocumentsBridgeSale(TransactionCase):
             'create_model': 'sale.order',
         })
 
-    def test_create_product_from_workflow(self):
+    def test_create_sale_from_workflow(self):
 
         document_gif = self.env['documents.document'].create({
             'datas': GIF,
@@ -52,7 +52,7 @@ class TestCaseDocumentsBridgeSale(TransactionCase):
         self.assertEqual(document_gif.res_model, 'sale.order')
         self.assertEqual(document_gif.res_id, new_sale_order.id)
 
-    def test_bridge_sale_project_settings_on_write(self):
+    def test_bridge_sale_settings_on_write(self):
         """
         Makes sure the settings apply their values when an document is assigned a res_model, res_id
         """
@@ -65,7 +65,8 @@ class TestCaseDocumentsBridgeSale(TransactionCase):
         })
         order_test = self.env['sale.order'].create({
             'name': 'sale_order_test',
-            'company_id': company_test.id
+            'partner_id': self.env.user.partner_id.id,
+            'company_id': company_test.id,
         })
         attachment_txt_test = self.env['ir.attachment'].create({
             'datas': TEXT,

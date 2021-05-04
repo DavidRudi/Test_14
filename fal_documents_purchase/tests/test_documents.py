@@ -37,11 +37,11 @@ class TestCaseDocumentsBridgePurchase(TransactionCase):
             'datas': GIF,
             'name': 'file.gif',
             'mimetype': 'image/gif',
-            'folder_id': self.folder_a.id,
+            'folder_id': self.folder_po.id,
         })
 
         workflow_rule = self.env['documents.workflow.rule'].create({
-            'domain_folder_id': self.folder_a.id,
+            'domain_folder_id': self.folder_po.id,
             'name': 'workflow purchase',
             'create_model': 'purchase.order',
         })
@@ -65,6 +65,7 @@ class TestCaseDocumentsBridgePurchase(TransactionCase):
         })
         purchase_test = self.env['purchase.order'].create({
             'name': 'po_test',
+            'partner_id': self.env.user.partner_id.id,
             'company_id': company_test.id
         })
         purchase_test_a = self.env['purchase.order'].create({
