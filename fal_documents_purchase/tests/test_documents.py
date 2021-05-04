@@ -70,6 +70,7 @@ class TestCaseDocumentsBridgePurchase(TransactionCase):
         })
         purchase_test_a = self.env['purchase.order'].create({
             'name': 'po_test_a',
+            'partner_id': self.env.user.partner_id.id,
             'company_id': company_test.id
         })
         attachment_txt_test = self.env['ir.attachment'].create({
