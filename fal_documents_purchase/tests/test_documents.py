@@ -31,19 +31,26 @@ class TestCaseDocumentsBridgePurchase(TransactionCase):
             'create_model': 'purchase.order',
         })
 
-    def test_bridge_folder_workflow(self):
-        """
-        tests the create new business model (project).
+    def test_create_sale_from_workflow(self):
 
-        """
-        self.assertEqual(self.attachment_txt.res_model, 'documents.document', "failed at default res model")
-        self.workflow_rule_task.apply_actions([self.attachment_txt.id])
+        document_gif = self.env['documents.document'].create({
+            'datas': GIF,
+            'name': 'file.gif',
+            'mimetype': 'image/gif',
+            'folder_id': self.folder_a.id,
+        })
 
-        self.assertEqual(self.attachment_txt.res_model, 'purchase.order', "failed at workflow_bridge_documents_purchase"
-                                                                        " new res_model")
-        po = self.env['purchase.order'].search([('id', '=', self.attachment_txt.res_id)])
-        self.assertTrue(so.exists(), 'failed at workflow_bridge_documents_purchase order')
-        self.assertEqual(self.attachment_txt.res_id, po.id, "failed at workflow_bridge_documents_purchase res_id")
+        workflow_rule = self.env['documents.workflow.rule'].create({
+            'domain_folder_id': self.folder_a.id,
+            'name': 'workflow purchase',
+            'create_model': 'purchase.order',
+        })
+
+        action = workflow_rule.apply_actions([document_gif.id])
+        new_purchase_order = self.env['purchase.order'].browse([action['res_id']])
+
+        self.assertEqual(document_gif.res_model, 'purchase.order')
+        self.assertEqual(document_gif.res_id, new_purchase_order.id)
 
     def test_bridge_purchase_settings_on_write(self):
         """
