@@ -53,7 +53,7 @@ class TestCaseDocumentsBridgeSale(TransactionCase):
 
         company_test = self.env['res.company'].create({
             'name': 'test bridge sales',
-            'project_folder': folder_test.id,
+            'sale_folder': folder_test.id,
             'documents_project_settings': False
         })
         order_test = self.env['sale.order'].create({
