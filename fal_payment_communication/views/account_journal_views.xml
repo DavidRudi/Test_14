@@ -1,0 +1,14 @@
+<odoo>
+	<record id="fal_account_journal_inherit_python_code" model="ir.ui.view">
+		<field name="name">fal_account_journal_inherit_python_code</field>
+        <field name="model">account.journal</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+        	<xpath expr="//field[@name='invoice_reference_type']" position="replace">
+        		<field name="invoice_reference_type"/>
+        		<field name="fal_python_code" attrs="{'invisible': [('invoice_reference_type', '!=', 'python_code')]}" placeholder="input python code here"/>
+        	</xpath>
+        </field>
+	</record>
+</odoo>
