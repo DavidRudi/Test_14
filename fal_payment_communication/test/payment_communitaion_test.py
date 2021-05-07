@@ -12,5 +12,6 @@ class PaymentCommunicationTest(TestInventory):
 				'fal_python_code': 'result=1'
 			})
 		inventory.action_start()
+		print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa")
 
 		# self.assertTrue(inventory.line_ids)
