@@ -1,0 +1,56 @@
+<odoo>
+    <data>
+        <record id="snailmail_lines_form_view" model="ir.ui.view">
+            <field name="name">snailmail_lines_form_view</field>
+            <field name="model">snailmail.lines</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="snail_mail_id"/>
+                            <field name="model_id"/>
+                            <field name="document_id"/>
+                            <field name="file_name" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="document" filename="file_name"/>
+                            <field name="references_id" widget="reference"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="snailmail_letter_form_inherit" model="ir.ui.view">
+            <field name="name">snailmail.letter.form.inherited</field>
+            <field name="model">snailmail.letter</field>
+            <field name="inherit_id" ref="snailmail.snailmail_letter_form" />
+            <field name="arch" type="xml">
+                <xpath expr="sheet/group/field[@name='info_msg']/.." position="after">
+                    <notebook attrs="{'invisible':[('is_snailmail_merge', '!=', True)]}">
+                        <page string="Documents" name="document">
+                            <field name ="snailmail_records">
+                                <tree>
+                                    <field name="snail_mail_id"/>
+                                    <field name="model_id"/>
+                                    <field name="document_id"/>
+                                    <field name="file_name" invisible="1"/>
+                                    <field name="document" filename="file_name" widget='binary'/>
+                                </tree>
+                            </field>
+                        </page> 
+                    </notebook>
+                </xpath>
+                <xpath expr="//group[@groups='base.group_no_one']" position="replace">
+                    <group groups="base.group_no_one">
+                        <field name ="is_snailmail_merge" invisible="True"/>
+                        <field name="model" attrs="{'invisible':[('is_snailmail_merge', '!=', False)]}"/>
+                        <field name="res_id" attrs="{'invisible':[('is_snailmail_merge', '!=', False)]}"/>
+                        <field name="color"/>
+                        <field name="duplex"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

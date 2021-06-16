@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="fal_account_invoice_send_inherit_snailmail_line" model="ir.ui.view">
+            <field name="name">fal_account_invoice_send_inherit_snailmail_line</field>
+            <field name="model">account.invoice.send</field>
+            <field name="inherit_id" ref="snailmail_account.account_invoice_send_inherit_account_wizard_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='option_letter']/." position="after">
+                    <div name="option_is_merge" class="text-left d-inline-block" attrs="{'invisible':[('snailmail_is_letter', '!=', True)]}">
+                        <field name="is_merge"/>
+                        <b><label for="is_merge"/></b>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

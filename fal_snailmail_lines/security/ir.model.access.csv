@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_snailmail_lines,access_snailmail_lines,model_snailmail_lines,base.group_user,1,1,1,1
