@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="fal_email_compose_message_wizard_form_inherit" model="ir.ui.view">
+        <field name="model">mail.compose.message</field>
+        <field name="inherit_id" ref="mail.email_compose_message_wizard_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='subject']" position="before">
+                <field name="fal_select_tags_followers" widget="many2many_tags_email" 
+                	placeholder="Add contacts to notify..."
+                	options="{'no_create': True, 'no_edit': True}" 
+                	context="{'force_email':True, 'show_email':True}"  
+                	attrs="{'invisible': [('notify_followers', '!=', True)]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
